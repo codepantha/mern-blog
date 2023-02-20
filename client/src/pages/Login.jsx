@@ -7,11 +7,13 @@ const Login = () => {
     password: ''
   });
   const [redirect, setRedirect] = useState(false);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormInput({ ...formInput, [e.target.name]: e.target.value });
+    setError(null);
   };
 
   const handleSubmit = async (e) => {
@@ -27,6 +29,7 @@ const Login = () => {
     });
 
     if (res.ok) setRedirect(true);
+    else setError('Invalid credentials');
   };
 
   if (redirect) return navigate('/');
@@ -34,6 +37,7 @@ const Login = () => {
   return (
     <form onSubmit={handleSubmit} className="login">
       <h1>Login</h1>
+      <span className="error">{error}</span>
       <input
         type="text"
         name="username"

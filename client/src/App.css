@@ -104,3 +104,11 @@ button:hover {
 form h1 {
   text-align: center;
 }
+
+form .error {
+  color: red;
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
