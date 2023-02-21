@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { UserContext } from '../UserContext';
 
 const Login = () => {
   const [formInput, setFormInput] = useState({
@@ -8,6 +9,8 @@ const Login = () => {
   });
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState(null);
+
+  const { setUserInfo } = useContext(UserContext);
 
   const handleChange = (e) => {
     setFormInput({ ...formInput, [e.target.name]: e.target.value });
@@ -26,7 +29,12 @@ const Login = () => {
       credentials: 'include',
     });
 
-    if (res.ok) setRedirect(true);
+    const data = await res.json();
+
+    if (res.ok) {
+      setUserInfo(data)
+      setRedirect(true);
+    }
     else setError('Invalid credentials');
   };
 

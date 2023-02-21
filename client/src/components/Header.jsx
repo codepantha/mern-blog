@@ -1,25 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../UserContext';
 
 const Header = () => {
-  const [username, setUsername] = useState(null);
+  const { userInfo, setUserInfo } = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://localhost:5000/profile', {
       credentials: 'include'
     }).then((res) => {
-      res.json().then((userData) => setUsername(userData.username));
+      res.json().then((userData) => setUserInfo(userData));
     });
-  }, [username]);
+  }, []);
 
   const logout = async () => {
     const res = await fetch('http://localhost:5000/logout', {
       method: 'POST',
       credentials: 'include'
-    })
+    });
 
-    if (res.ok) setUsername(null);
-  }
+    if (res.ok) setUserInfo(null);
+
+    return navigate('/login');
+  };
+
+  const username = userInfo?.username;
 
   return (
     <header>
@@ -27,12 +34,15 @@ const Header = () => {
         Codepantha's Blog
       </a>
       <nav>
-        {username ? (
+        {username && (
           <>
             <Link to="/create-post">Create New Post</Link>
-            <a href="#" onClick={logout}>Logout</a>
+            <a href="#" onClick={logout}>
+              Logout
+            </a>
           </>
-        ) : (
+        )}
+        {!username && (
           <>
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
