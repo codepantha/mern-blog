@@ -4,11 +4,13 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 const User = require('./models/User');
 
 const app = express();
 
+app.use(cookieParser());
 app.use(cors({ credentials: true, origin: 'http://127.0.0.1:5173' }));
 app.use(express.json());
 
@@ -43,9 +45,24 @@ app.post('/login', async (req, res) => {
     { expiresIn: process.env.JWT_LIFETIME },
     (err, token) => {
       if (err) throw err;
-      res.status(200).cookie('token', token).json('ok');
+      res.cookie('token', token, { sameSite: 'none', secure: true }).json('ok');
     }
   );
+});
+
+app.get('/profile', (req, res) => {
+  const { token } = req.cookies;
+
+  if (token) {
+    jwt.verify(token, process.env.JWT_KEY, (err, info) => {
+      if (err) throw err;
+      return res.json(info);
+    });
+  }
+});
+
+app.post('/logout', (req, res) => {
+  res.cookie('token', '', { sameSite: 'none', secure: true }).json('ok');
 });
 
 mongoose
