@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const Login = () => {
   const [formInput, setFormInput] = useState({
@@ -8,8 +8,6 @@ const Login = () => {
   });
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState(null);
-
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormInput({ ...formInput, [e.target.name]: e.target.value });
@@ -25,14 +23,14 @@ const Login = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ username, password }),
-      credentials: 'include'
+      credentials: 'include',
     });
 
     if (res.ok) setRedirect(true);
     else setError('Invalid credentials');
   };
 
-  if (redirect) return navigate('/');
+  if (redirect) return <Navigate to={'/'} />
 
   return (
     <form onSubmit={handleSubmit} className="login">
