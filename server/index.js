@@ -45,7 +45,10 @@ app.post('/login', async (req, res) => {
     { expiresIn: process.env.JWT_LIFETIME },
     (err, token) => {
       if (err) throw err;
-      res.cookie('token', token, { sameSite: 'none', secure: true }).json('ok');
+      res.cookie('token', token, { sameSite: 'none', secure: true }).json({
+        id: user._id,
+        username: user.username
+      });
     }
   );
 });
