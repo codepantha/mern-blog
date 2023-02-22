@@ -81,20 +81,29 @@ app.post('/posts', uploadMiddleware.single('file'), async (req, res, next) => {
   // save the post
   const { title, summary, content } = req.body;
 
-  const post = await Post.create({
-    title,
-    summary,
-    content,
-    cover: newFilePath
-  });
+  const { token } = req.cookies;
 
-  if (!post) throw new Error('something bad happened. Try later');
+  if (token) {
+    jwt.verify(token, process.env.JWT_KEY, async (err, info) => {
+      if (err) throw err;
+      const post = await Post.create({
+        title,
+        summary,
+        content,
+        cover: newFilePath,
+        author: info.id
+      });
 
-  return res.status(201).json(post);
+      if (!post) throw new Error('something bad happened. Try later');
+      return res.status(201).json(post);
+    });
+  }
 });
 
 app.get('/posts', (req, res) => {
-  Post.find().then((posts) => res.status(200).json(posts));
+  Post.find()
+    .populate('author', ['username'])
+    .then((posts) => res.status(200).json(posts));
 });
 
 app.post('/logout', (req, res) => {
