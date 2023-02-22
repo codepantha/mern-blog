@@ -3,11 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <!-- Include your favorite highlight.js stylesheet -->
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/monokai-sublime.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React</title>
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Include the highlight.js library -->
+    <script src="//unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      hljs.configure({   // optionally configure hljs
+        languages: ['javascript', 'ruby', 'python']
+      });
+    </script>
   </body>
 </html>

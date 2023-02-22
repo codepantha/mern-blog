@@ -9,8 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "highlight.js": "^11.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.8.0"
   },
   "devDependencies": {

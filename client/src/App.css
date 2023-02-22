@@ -101,7 +101,7 @@ button:hover {
   background-color: rgb(48, 46, 46);
 }
 
-form h1 {
+form.login h1, form.register h1 {
   text-align: center;
 }
 
