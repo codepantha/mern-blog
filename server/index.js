@@ -5,8 +5,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
+const fs = require('fs');
+
+const uploadMiddleware = multer({ dest: 'uploads/' });
 
 const User = require('./models/User');
+const Post = require('./models/Post');
 
 const app = express();
 
@@ -62,6 +67,30 @@ app.get('/profile', (req, res) => {
       return res.json(info);
     });
   }
+});
+
+app.post('/posts', uploadMiddleware.single('file'), async (req, res, next) => {
+  const { originalname, path } = req.file;
+
+  const fileExtension = originalname.split('.')[1];
+  const newFilePath = path + '.' + fileExtension;
+
+  // rename the file
+  fs.renameSync(path, newFilePath);
+
+  // save the post
+  const { title, summary, content } = req.body;
+
+  const post = await Post.create({
+    title,
+    summary,
+    content,
+    cover: newFilePath
+  });
+
+  if (!post) throw new Error('something bad happened. Try later');
+
+  return res.status(201).json(post);
 });
 
 app.post('/logout', (req, res) => {
