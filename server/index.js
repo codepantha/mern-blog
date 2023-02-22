@@ -93,6 +93,10 @@ app.post('/posts', uploadMiddleware.single('file'), async (req, res, next) => {
   return res.status(201).json(post);
 });
 
+app.get('/posts', (req, res) => {
+  Post.find().then((posts) => res.status(200).json(posts));
+});
+
 app.post('/logout', (req, res) => {
   res.cookie('token', '', { sameSite: 'none', secure: true }).json('ok');
 });
