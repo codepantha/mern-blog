@@ -1,26 +1,26 @@
 import React from 'react';
+import { formatISO9075 } from 'date-fns';
+import { Link } from 'react-router-dom';
 
-const Post = () => {
+const Post = ({ _id, title, summary, cover, createdAt, author }) => {
   return (
     <div className="post">
       <div className="image">
-        <img src="https://picsum.photos/400/300" alt="post-img" />
+        <Link to={`posts/${_id}`}>
+          <img src={`http://localhost:5000/${cover}`} alt="post-img" />
+        </Link>
       </div>
       <div className="texts">
-        <h2>The Origin of Lorem Ipsum</h2>
+        <Link to={`posts/${_id}`}>
+          <h2>{title}</h2>
+        </Link>
         <p className="info">
           <a href="" className="author">
-            Codepantha
+            {author.username}
           </a>{' '}
-          <time>2023-01-25 12:25</time>
+          <time>{formatISO9075(new Date(createdAt))}</time>
         </p>
-        <p className="excerpt">
-          Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
-          laying out print, graphic or web designs. The passage is attributed to
-          an unknown typesetter in the 15th century who is thought to have
-          scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a
-          type specimen book.
-        </p>
+        <p className="excerpt">{summary}</p>
       </div>
     </div>
   );
