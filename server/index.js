@@ -18,6 +18,7 @@ const app = express();
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: 'http://127.0.0.1:5173' }));
 app.use(express.json());
+app.use('/uploads', express.static(__dirname + '/uploads'))
 
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
@@ -103,12 +104,23 @@ app.post('/posts', uploadMiddleware.single('file'), async (req, res, next) => {
 app.get('/posts', (req, res) => {
   Post.find()
     .populate('author', ['username'])
+    .sort({ createdAt: -1 })
+    .limit(20)
     .then((posts) => res.status(200).json(posts));
 });
 
 app.post('/logout', (req, res) => {
   res.cookie('token', '', { sameSite: 'none', secure: true }).json('ok');
 });
+
+app.get('/posts/:id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id).populate('author', ['username']);
+    res.status(200).json(post);
+  } catch (e) {
+    res.status(404).json('post not found');
+  }
+})
 
 mongoose
   .connect(process.env.MONGO_URL)
