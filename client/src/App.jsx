@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Layout } from './components';
-import { CreatePost, Home, Login, Register } from './pages';
+import { CreatePost, Home, Login, Post, Register } from './pages';
 import { UserContextProvider } from './UserContext';
 
 function App() {
@@ -13,6 +13,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/posts/:id" element={<Post />} />
         </Route>
       </Routes>
     </UserContextProvider>
