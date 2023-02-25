@@ -117,3 +117,44 @@ form .error {
   margin-bottom: 10px;
   font-weight: 600;
 }
+
+div.post-page div.image {
+  height: 200px;
+}
+
+div.post-page div.image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+div.post-page a {
+  color: #333;
+  text-decoration: underline;
+}
+
+div.post-page h1 {
+  text-align: center;
+  margin: 10px 0 5px;
+}
+
+div.post-page time {
+  text-align: center;
+  display: block;
+  font-size: .8rem;
+  color: #aaa;
+  margin: 20px 0;
+}
+
+div.post-page .author {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+div.post-page .content {
+  font-size: 16px;
+  line-height: 24px;
+}

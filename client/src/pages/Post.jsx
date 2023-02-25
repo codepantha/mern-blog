@@ -1,3 +1,4 @@
+import { formatISO9075 } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -25,7 +26,10 @@ const Post = () => {
   if (error) return <p>Post not found</p>;
 
   return (
-    <div>
+    <div className="post-page">
+      <h1>{fetchedPost?.title}</h1>
+      <time>{fetchedPost ? formatISO9075(new Date(fetchedPost?.createdAt)) : ''}</time>
+      <p className="author">by {fetchedPost?.author.username}</p>
       <div className="image">
         <img
           src={`http://localhost:5000/${fetchedPost?.cover}`}
@@ -33,8 +37,7 @@ const Post = () => {
         />
       </div>
 
-      <h1>{fetchedPost?.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: fetchedPost?.content }} />
+      <div className="content" dangerouslySetInnerHTML={{ __html: fetchedPost?.content }} />
     </div>
   );
 };
