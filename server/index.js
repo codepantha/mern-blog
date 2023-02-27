@@ -141,7 +141,7 @@ app.patch(
             return res.status(403).json({ msg: 'Unathorized access' });
 
           // update post
-          await post.update(data);
+          await post.updateOne(data);
         });
       }
 
