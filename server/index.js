@@ -16,7 +16,7 @@ const Post = require('./models/Post');
 const app = express();
 
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: 'http://127.0.0.1:5173' }));
+app.use(cors({ credentials: true, origin: 'codepantha-blog.vercel.app' }));
 app.use(express.json());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
