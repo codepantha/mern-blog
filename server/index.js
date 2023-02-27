@@ -18,7 +18,7 @@ const app = express();
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: 'http://127.0.0.1:5173' }));
 app.use(express.json());
-app.use('/uploads', express.static(__dirname + '/uploads'))
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
@@ -64,7 +64,7 @@ app.get('/profile', (req, res) => {
 
   if (token) {
     jwt.verify(token, process.env.JWT_KEY, (err, info) => {
-      if (err) throw err;
+      if (err) return res.status(401).json('Unathenticated user.');
       return res.json(info);
     });
   }
@@ -101,6 +101,59 @@ app.post('/posts', uploadMiddleware.single('file'), async (req, res, next) => {
   }
 });
 
+app.patch(
+  '/posts/:id',
+  uploadMiddleware.single('file'),
+  async (req, res, next) => {
+    let newFilePath = null;
+    const { id } = req.params;
+    const { token } = req.cookies;
+
+    if (req.file) {
+      const { originalname, path } = req.file;
+      const fileExtension = originalname.split('.')[1];
+      newFilePath = path + '.' + fileExtension;
+      // rename the file
+      fs.renameSync(path, newFilePath);
+    }
+
+    try {
+      const post = await Post.findById(id);
+
+      if (!post) return res.status(404).json({ msg: 'Post not found' });
+
+      const data = {
+        title: req.body.title,
+        summary: req.body.summary,
+        content: req.body.content,
+        cover: newFilePath ? newFilePath : post.cover
+      };
+
+      // now check if user has the right to update post
+      if (token) {
+        jwt.verify(token, process.env.JWT_KEY, async (err, info) => {
+          if (err) return res.status(401).json({ msg: 'Unauthenticated' });
+
+          const isAuthor =
+            JSON.stringify(post.author._id) === JSON.stringify(info.id);
+
+          if (!isAuthor)
+            return res.status(403).json({ msg: 'Unathorized access' });
+
+          // update post
+          await post.update(data);
+        });
+      }
+
+      return res.status(200).json(post);
+    } catch (err) {
+      res
+        .status(400)
+        .json({ msg: 'Something bad happened! Please try again.' });
+    }
+  }
+);
+
 app.get('/posts', (req, res) => {
   Post.find()
     .populate('author', ['username'])
@@ -115,12 +168,14 @@ app.post('/logout', (req, res) => {
 
 app.get('/posts/:id', async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate('author', ['username']);
+    const post = await Post.findById(req.params.id).populate('author', [
+      'username'
+    ]);
     res.status(200).json(post);
   } catch (e) {
     res.status(404).json('post not found');
   }
-})
+});
 
 mongoose
   .connect(process.env.MONGO_URL)
