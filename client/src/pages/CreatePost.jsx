@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { WYSIWYGEditor } from '../components';
+import { Form } from '../components';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -29,30 +29,20 @@ const CreatePost = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
+    <>
+      <Form
+        title={title}
+        setTitle={setTitle}
+        summary={summary}
+        setSummary={setSummary}
+        content={content}
+        setContent={setContent}
+        files={files}
+        setFiles={setFiles}
+        handleSubmit={handleSubmit}
+        buttonText="Create Post"
       />
-      <input
-        type="text"
-        placeholder="Summary"
-        value={summary}
-        onChange={(e) => setSummary(e.target.value)}
-        required
-      />
-      <input type="file" onChange={(e) => setFiles(e.target.files)} />
-      <WYSIWYGEditor
-        value={content}
-        onChange={(newValue) => setContent(newValue)}
-      />
-      <button style={{ marginTop: '5px' }} type="submit">
-        Create Post
-      </button>
-    </form>
+    </>
   );
 };
 
