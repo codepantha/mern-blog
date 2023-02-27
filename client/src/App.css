@@ -175,4 +175,31 @@ div.post-page .content p {
 div.post-page .content p img {
   display: block;
   margin: 0 auto;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  div.post-page .content p img {
+    width: 80%;
+  }
+}
+
+div.edit-row {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+div.edit-row .edit-btn {
+  padding: 10px 30px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+a svg {
+  height: 24px;
 }
