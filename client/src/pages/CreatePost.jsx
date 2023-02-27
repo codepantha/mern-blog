@@ -38,7 +38,6 @@ const CreatePost = () => {
         setSummary={setSummary}
         content={content}
         setContent={setContent}
-        files={files}
         setFiles={setFiles}
         handleSubmit={handleSubmit}
         buttonText="Create Post"

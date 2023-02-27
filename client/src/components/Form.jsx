@@ -9,7 +9,6 @@ const Form = (props) => {
     setSummary,
     content,
     setContent,
-    files,
     setFiles,
     handleSubmit,
     buttonText
