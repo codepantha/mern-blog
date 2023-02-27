@@ -2,6 +2,7 @@ import { formatISO9075 } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { UserContext } from '../UserContext';
+import { baseUrl } from '../utils';
 
 const Post = () => {
   const [fetchedPost, setFetchedPost] = useState(null);
@@ -13,7 +14,7 @@ const Post = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/posts/${id}`);
+        const res = await fetch(`${baseUrl}/posts/${id}`);
         const data = await res.json();
 
         if (res.ok) setFetchedPost(data);
@@ -58,7 +59,7 @@ const Post = () => {
       )}
       <div className="image">
         <img
-          src={`http://localhost:5000/${fetchedPost?.cover}`}
+          src={`${baseUrl}/${fetchedPost?.cover}`}
           alt="cover-img"
         />
       </div>

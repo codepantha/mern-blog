@@ -1,13 +1,14 @@
 import React from 'react';
 import { formatISO9075 } from 'date-fns';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../utils';
 
 const Post = ({ _id, title, summary, cover, createdAt, author }) => {
   return (
     <div className="post">
       <div className="image">
         <Link to={`posts/${_id}`}>
-          <img src={`http://localhost:5000/${cover}`} alt="post-img" />
+          <img src={`${baseUrl}/${cover}`} alt="post-img" />
         </Link>
       </div>
       <div className="texts">

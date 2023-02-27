@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form } from '../components';
+import { baseUrl } from '../utils';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -19,7 +20,7 @@ const CreatePost = () => {
 
     e.preventDefault();
 
-    const res = await fetch('http://localhost:5000/posts', {
+    const res = await fetch(`${baseUrl}/posts`, {
       method: 'POST',
       credentials: 'include',
       body: data

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { baseUrl } from '../utils';
 
 const Register = () => {
   const [formInput, setFormInput] = useState({
@@ -13,7 +14,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     const { username, password } = formInput;
     e.preventDefault();
-    const res = await fetch('http://localhost:5000/register', {
+    const res = await fetch(`${baseUrl}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

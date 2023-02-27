@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Form } from '../components';
+import { baseUrl } from '../utils';
 
 const EditPost = () => {
   const [title, setTitle] = useState('');
@@ -12,7 +13,7 @@ const EditPost = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const res = await fetch(`http://localhost:5000/posts/${id}`);
+      const res = await fetch(`${baseUrl}/posts/${id}`);
       const data = await res.json();
 
       setTitle(data.title);
@@ -35,7 +36,7 @@ const EditPost = () => {
 
     e.preventDefault();
 
-    const res = await fetch(`http://localhost:5000/posts/${id}`, {
+    const res = await fetch(`${baseUrl}/posts/${id}`, {
       method: 'PATCH',
       credentials: 'include',
       body: data

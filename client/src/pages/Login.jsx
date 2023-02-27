@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
+import { baseUrl } from '../utils';
 
 const Login = () => {
   const [formInput, setFormInput] = useState({
@@ -20,7 +21,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, password } = formInput;
-    const res = await fetch('http://localhost:5000/login', {
+    const res = await fetch(`${baseUrl}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

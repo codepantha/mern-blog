@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
+import { baseUrl } from '../utils';
 
 const Header = () => {
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -8,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5000/profile', {
+    fetch(`${baseUrl}/profile`, {
       credentials: 'include'
     }).then((res) => {
       res.json().then((userData) => setUserInfo(userData));
