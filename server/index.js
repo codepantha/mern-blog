@@ -183,7 +183,7 @@ mongoose
     console.log('connected to db');
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () =>
-      console.log(`app running on port http://localhost:${PORT}`)
+      console.log(`app running on port ${PORT}`)
     );
   })
   .catch((e) => console.log(e));
